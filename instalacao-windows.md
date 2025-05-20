@@ -224,6 +224,7 @@ extension=pdo_pgsql
 extension=pdo_sqlite
 extension=pgsql
 extension=shmop
+extension=zip
 ```
 > Extensões como `oci8` ou `pdo_oci` podem ser ativadas se você for usar Oracle.
 
