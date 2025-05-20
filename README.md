@@ -30,7 +30,7 @@ Extraia o conteúdo em um diretório, por exemplo:
 ```
 C:\server\php-8.2.28
 ```
-
+s
 ---
 
 ### 2. Adicionar PHP ao PATH do Sistema
@@ -106,6 +106,8 @@ php artisan serve
 
 ## 📘 Observações Finais
 
+- O código está bem documentado, facilitando o entendimento de cada parte do sistema.
+-  documentação da API foi gerada com **Swagger**, facilitando o uso e a integração com a API criada. Para acessá-la, utilize o seguinte link no seu navegador: http://127.0.0.1:8000/api/documentation
 - O painel administrativo foi criado com **Filament**, facilitando a gestão dos dados da aplicação.
 - A API foi construída utilizando boas práticas REST.
 - A estrutura está preparada para escalabilidade e integração com outras ferramentas.
