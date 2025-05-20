@@ -104,16 +104,6 @@ php artisan serve
 
 ---
 
-## 💡 Iniciar Servidor Manualmente com PHP
-
-Caso prefira não usar o `php artisan serve`, execute:
-
-```bash
-php -S localhost:8080 -t C:\server\www
-```
-
----
-
 ## 📘 Observações Finais
 
 - O painel administrativo foi criado com **Filament**, facilitando a gestão dos dados da aplicação.
