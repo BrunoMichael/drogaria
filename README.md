@@ -1,128 +1,90 @@
+# 💊 Drogaria - Sistema de Gestão com Laravel + Filament
 
-# Sistema de Gerenciamento de Drogaria
+Este sistema foi desenvolvido em PHP utilizando o framework Laravel e o painel administrativo Filament. Ele atende aos requisitos propostos na prova técnica.
 
-Este sistema foi desenvolvido em **PHP** utilizando o framework **Laravel** juntamente com o **Filament**, cumprindo todos os requisitos definidos na prova técnica.
-
-> Obs: Durante o desenvolvimento, cheguei a tentar instalar o Delphi para realizar a comunicação com a API desenvolvida em Laravel, mas optei por não seguir com essa abordagem a fim de não comprometer o prazo de entrega.
-
----
-
-## 🔧 Requisitos Técnicos
-
-- PHP 8.2+
-- Composer
-- Laravel 10+
-- Filament Admin Panel
-- MySQL
+> ⚠️ Durante o desenvolvimento, considerei utilizar Delphi para comunicação com a API, mas optei por manter tudo em Laravel para garantir agilidade e cumprimento do prazo.
 
 ---
 
-## 🚀 Instalação do Ambiente no Windows
+## 📋 Requisitos Técnicos
 
-### 1. Baixar o PHP
-
-Faça o download do PHP 8.2 para Windows:
-
-🔗 [Download PHP 8.2.28 - VS16 x64](https://windows.php.net/downloads/releases/php-8.2.28-Win32-vs16-x64.zip)
-
-Extraia o conteúdo em um diretório, por exemplo:
-
-```
-C:\server\php-8.2.28
-```
-s
----
-
-### 2. Adicionar PHP ao PATH do Sistema
-
-1. No menu Iniciar, procure por **"Editar variáveis de ambiente do sistema"** e abra.
-2. Clique em **"Variáveis de Ambiente"**.
-3. Em "Variáveis do sistema", selecione **Path** e clique em **Editar**.
-4. Clique em **Novo** e adicione:
-
-```
-C:\server\php-8.2.28
-```
-
-5. Confirme todas as janelas com **OK**.
+* PHP 8.2+
+* Composer
+* Laravel 12
+* MySQL
+* PhpMyAdmin
+* Filament Admin Panel
 
 ---
 
-### 3. Verificar a Instalação do PHP
+## 💻 Instalação no Windows
 
-Abra o terminal (cmd ou Git Bash) e execute:
+Você pode seguir o guia completo de instalação do ambiente no Windows:
+
+👉 [https://github.com/BrunoMichael/drogaria/blob/main/instalacao-windows.md](https://github.com/BrunoMichael/drogaria/blob/main/instalacao-windows.md)
+
+---
+
+## 🚀 Como Rodar o Projeto
+
+1. Clone o repositório:
 
 ```bash
-php -v
-```
-
-Você deverá ver a versão do PHP instalada.
-
----
-
-### 4. Instalar o MySQL Manualmente
-
-Baixe o instalador do MySQL no site oficial:
-
-🔗 [Download MySQL](https://dev.mysql.com/downloads/installer/)
-
-Durante a instalação:
-
-- Escolha a opção "Developer Default" ou "Server only".
-- Configure uma senha para o usuário root.
-- Finalize a instalação.
-
----
-
-## 📦 Criar Projeto Laravel com Composer
-
-Execute no terminal:
-
-```bash
-composer create-project --prefer-dist laravel/laravel drogaria
+git clone https://github.com/BrunoMichael/drogaria.git
 cd drogaria
 ```
 
----
+2. Instale as dependências do PHP:
 
-## 🧱 Comandos Essenciais do Laravel
-
-### Criar um Model com Migration
 ```bash
-php artisan make:model Modelo -m
+composer install
 ```
 
-### Criar usuário Filament (para acesso ao painel admin)
+3. Copie o arquivo de ambiente e gere a key:
+
 ```bash
-php artisan make:filament-user
+cp .env.example .env
+php artisan key:generate
 ```
 
-### Iniciar o Servidor Laravel
+4. Configure o banco de dados no arquivo `.env`.
+
+5. Rode as migrations e seeders (se houver):
+
+```bash
+php artisan migrate
+```
+
+6. Inicie o servidor local:
+
 ```bash
 php artisan serve
 ```
 
 ---
 
-## 📘 Observações Finais
+## 👤 Criar Usuário Administrador
 
-- O código está bem documentado, facilitando o entendimento de cada parte do sistema.
--  documentação da API foi gerada com **Swagger**, facilitando o uso e a integração com a API criada. Para acessá-la, utilize o seguinte link no seu navegador: http://127.0.0.1:8000/api/documentation
-- O painel administrativo foi criado com **Filament**, facilitando a gestão dos dados da aplicação.
-- A API foi construída utilizando boas práticas REST.
-- A estrutura está preparada para escalabilidade e integração com outras ferramentas.
+Para acessar o painel Filament, crie um usuário via terminal:
 
----
-
-## 📂 Estrutura Recomendada de Diretórios
-
-```
-C:\server\
-├── php-8.2.28\
-├── www\
-│   └── drogaria\
+```bash
+php artisan make:filament-user
 ```
 
 ---
 
-Desenvolvido com dedicação para a avaliação técnica. Qualquer dúvida ou sugestão, fico à disposição!
+## 📘 Documentação da API (Swagger)
+
+A documentação da API REST está disponível localmente após iniciar o servidor:
+
+📎 [http://127.0.0.1:8000/api/documentation](http://127.0.0.1:8000/api/documentation)
+
+---
+
+## 🗂️ Estrutura de Código
+
+Abaixo estão algumas pastas importantes:
+
+* app/Filament → Painel administrativo
+* app/Http/Controllers/Api → Controllers da API
+* app/Models → Models do sistema
