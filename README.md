@@ -49,6 +49,21 @@ php artisan key:generate
 
 4. Configure o banco de dados no arquivo `.env`.
 
+Exemplo: 
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=drogaria
+DB_USERNAME=root
+DB_PASSWORD=admin123+
+```
+
+> ⚠️ **Atenção:** Não use aspas no valor da senha, a menos que ela contenha espaços. Aspas desnecessárias podem causar falha na conexão.
+
+Certifique-se de que o MySQL esteja rodando e que o banco de dados especificado (`drogaria`) exista. Você pode criar o banco manualmente ou usar uma migration depois de instalar as dependências.
+
 5. Rode as migrations e seeders (se houver):
 
 ```bash
