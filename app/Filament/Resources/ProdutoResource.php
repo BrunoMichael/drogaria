@@ -35,6 +35,7 @@ class ProdutoResource extends Resource
      * @var string|null
      */
     protected static ?string $navigationGroup = 'Cadastros';
+    protected static ?int $navigationSort = 1;
 
     /**
      * Define os campos do formulário de criação/edição de produto.

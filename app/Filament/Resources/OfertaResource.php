@@ -33,7 +33,7 @@ class OfertaResource extends Resource
      * Grupo de navegação no painel.
      */
     protected static ?string $navigationGroup = 'Promoções';
-
+    protected static ?int $navigationSort = 2;
     /**
      * Define o formulário de criação/edição de ofertas.
      *

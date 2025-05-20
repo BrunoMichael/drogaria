@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('orcamentos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vendedor_id')->constrained('vendedors')->onDelete('restrict');
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('restrict');
+            $table->foreignId('vendedor_id')->constrained('pessoas')->onDelete('restrict');
+            $table->foreignId('cliente_id')->constrained('pessoas')->onDelete('restrict');
             $table->timestamps();
         });
     }

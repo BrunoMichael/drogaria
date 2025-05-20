@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ClienteResource\Pages;
-use App\Models\Cliente;
+use App\Filament\Resources\PessoaResource\Pages;
+use App\Models\Pessoa;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,18 +13,18 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Resource ClienteResource
+ * Resource PessoaResource
  *
- * Responsável pela interface administrativa do modelo Cliente no painel do Filament.
+ * Responsável pela interface administrativa do modelo Pessoa no painel do Filament.
  */
-class ClienteResource extends Resource
+class PessoaResource extends Resource
 {
     /**
      * Modelo principal relacionado ao recurso.
      *
-     * @var class-string<\App\Models\Cliente>
+     * @var class-string<\App\Models\Pessoa>
      */
-    protected static ?string $model = Cliente::class;
+    protected static ?string $model = Pessoa::class;
 
     /**
      * Ícone do menu lateral.
@@ -34,12 +35,11 @@ class ClienteResource extends Resource
      * Grupo de navegação do menu lateral.
      */
     protected static ?string $navigationGroup = 'Cadastros';
+    protected static ?int $navigationSort = 1;
+
 
     /**
      * Define o formulário de criação/edição.
-     *
-     * @param Form $form
-     * @return Form
      */
     public static function form(Form $form): Form
     {
@@ -47,15 +47,36 @@ class ClienteResource extends Resource
             Forms\Components\TextInput::make('nome')
                 ->label('Nome')
                 ->required()
-                ->maxLength(255),
+                ->maxLength(255)
+                ->columnSpan('full'),
+
+            Forms\Components\Grid::make(2)
+                ->schema([
+                    Forms\Components\Toggle::make('eh_cliente')
+                        ->label('É Cliente')
+                        ->columnSpan(1),
+
+                    Forms\Components\Toggle::make('eh_vendedor')
+                        ->label('É Vendedor')
+                        ->columnSpan(1)
+                        ->visible(function (callable $get) {
+                            $email = $get('email');
+
+                            if (!$email) {
+                                return false;
+                            }
+
+                            $pessoaExists = \App\Models\Pessoa::where('email', $email)->exists();
+                            $userExists = User::where('email', $email)->exists();
+
+                            return $pessoaExists && $userExists;
+                        }),
+                ]),
         ]);
     }
 
     /**
-     * Define a tabela de listagem de clientes.
-     *
-     * @param Table $table
-     * @return Table
+     * Define a tabela de listagem de pessoas.
      */
     public static function table(Table $table): Table
     {
@@ -69,6 +90,13 @@ class ClienteResource extends Resource
                     ->label('Nome')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('eh_cliente')
+                    ->label('Cliente')
+                    ->boolean(),
+
+                Tables\Columns\IconColumn::make('eh_vendedor')
+                    ->label('Vendedor')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -78,9 +106,7 @@ class ClienteResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                // Filtros customizados podem ser adicionados aqui
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -91,27 +117,21 @@ class ClienteResource extends Resource
 
     /**
      * Define os relation managers disponíveis.
-     *
-     * @return array
      */
     public static function getRelations(): array
     {
-        return [
-            // RelationManagers podem ser adicionados aqui
-        ];
+        return [];
     }
 
     /**
      * Define as páginas disponíveis para o recurso.
-     *
-     * @return array<string, \Filament\Resources\Pages\Page>
      */
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListClientes::route('/'),
-            'create' => Pages\CreateCliente::route('/create'),
-            'edit' => Pages\EditCliente::route('/{record}/edit'),
+            'index' => Pages\ListPessoas::route('/'),
+            'create' => Pages\CreatePessoa::route('/create'),
+            'edit' => Pages\EditPessoa::route('/{record}/edit'),
         ];
     }
 }

@@ -4,114 +4,101 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrcamentoResource\Pages;
 use App\Filament\Resources\OrcamentoResource\RelationManagers\ItensRelationManager;
-use App\Models\Cliente;
 use App\Models\Orcamento;
-use App\Models\Vendedor;
+use App\Models\Pessoa;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
+
 
 /**
  * Class OrcamentoResource
  *
  * Recurso do Filament para gerenciar registros de orçamentos.
- *
- * @package App\Filament\Resources
  */
 class OrcamentoResource extends Resource
 {
-    /**
-     * Modelo associado ao recurso.
-     *
-     * @var string|null
-     */
     protected static ?string $model = Orcamento::class;
 
-    /**
-     * Ícone de navegação no painel.
-     *
-     * @var string|null
-     */
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    /**
-     * Grupo de navegação onde o recurso será exibido.
-     *
-     * @var string|null
-     */
     protected static ?string $navigationGroup = 'Orçamentos';
+    protected static ?int $navigationSort = 3;
 
-    /**
-     * Define o formulário de criação/edição do recurso.
-     *
-     * @param Form $form
-     * @return Form
-     */
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('vendedor_id')
                     ->label('Vendedor')
-                    ->relationship('vendedor', 'nome')
+                    ->required()
                     ->searchable()
                     ->preload()
-                    ->required()
-                    ->options(fn () => Vendedor::all()->pluck('nome', 'id'))
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('codigo')
-                            ->label('Código')
-                            ->required()
-                            ->unique()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('nome')
-                            ->label('Nome')
-                            ->required()
-                            ->maxLength(255),
-                    ]),
+                    ->options(fn() => Pessoa::where('eh_vendedor', true)->pluck('nome', 'id'))
+                    ->searchable()
+                    ->getSearchResultsUsing(function (string $search) {
+                        return Pessoa::where('eh_vendedor', true)
+                            ->where(function ($query) use ($search) {
+                                $query->where('nome', 'like', "%{$search}%")
+                                    ->orWhere('codigo', 'like', "%{$search}%");
+                            })
+                            ->pluck('nome', 'id');
+                    }),
+
                 Forms\Components\Select::make('cliente_id')
                     ->label('Cliente')
-                    ->relationship('cliente', 'nome')
+                    ->required()
                     ->searchable()
                     ->preload()
-                    ->required()
-                    ->options(fn () => Cliente::all()->pluck('nome', 'id'))
+                    ->options(fn() => Pessoa::where('eh_cliente', true)->pluck('nome', 'id'))
                     ->createOptionForm([
-                        Forms\Components\TextInput::make('codigo')
-                            ->label('Código')
-                            ->required()
-                            ->unique()
-                            ->maxLength(255),
                         Forms\Components\TextInput::make('nome')
                             ->label('Nome')
                             ->required()
                             ->maxLength(255),
                     ])
+                    ->createOptionUsing(function (array $data) {
+                        $cliente = Pessoa::create([
+                            'nome' => $data['nome'],
+                            'eh_cliente' => true,
+                            'eh_vendedor' => false,
+                        ]);
+
+                        Notification::make()
+                            ->title('Cliente criado com sucesso!')
+                            ->success()
+                            ->send();
+
+                        return $cliente->id;
+                    })
+                    ->getSearchResultsUsing(function (string $search) {
+                        return Pessoa::where('eh_cliente', true)
+                            ->where(function ($query) use ($search) {
+                                $query->where('nome', 'like', "%{$search}%")
+                                    ->orWhere('codigo', 'like', "%{$search}%");
+                            })
+                            ->pluck('nome', 'id');
+                    })
                     ->rule(function (Forms\Get $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
-                            $vendedorId = $get('vendedor_id');
-                            $vendedorNomeOriginal = \App\Models\Vendedor::find($vendedorId)?->nome ?? '';
-                            $clienteNomeOriginal = \App\Models\Cliente::find($value)?->nome ?? '';
+                            $vendedor = Pessoa::where('id', $get('vendedor_id'))->first();
+                            $cliente = Pessoa::where('id', $value)->first();
 
-                            $vendedorNome = strtolower(preg_replace('/\s+/', ' ', $vendedorNomeOriginal));
-                            $clienteNome = strtolower(preg_replace('/\s+/', ' ', $clienteNomeOriginal));
+                            $vendedorNome = $vendedor?->nome ?? '';
+                            $clienteNome = $cliente?->nome ?? '';
 
-                            if ($clienteNome === $vendedorNome) {
-                                $fail('O Vendedor não pode ser o mesmo que o Cliente.');
+                            if (strtolower(trim($vendedorNome)) === strtolower(trim($clienteNome))) {
+                                $fail('O Vendedor pode ser Cliente, mas não pode ser Cliente e Vendedor ao mesmo tempo.');
                             }
                         };
                     }),
             ]);
     }
 
-    /**
-     * Define a tabela de listagem do recurso.
-     *
-     * @param Table $table
-     * @return Table
-     */
+
     public static function table(Table $table): Table
     {
         return $table
@@ -133,11 +120,6 @@ class OrcamentoResource extends Resource
             ]);
     }
 
-    /**
-     * Define os relation managers disponíveis.
-     *
-     * @return array
-     */
     public static function getRelations(): array
     {
         return [
@@ -145,11 +127,6 @@ class OrcamentoResource extends Resource
         ];
     }
 
-    /**
-     * Define as páginas disponíveis para o recurso.
-     *
-     * @return array<string, \Filament\Resources\Pages\Page>
-     */
     public static function getPages(): array
     {
         return [

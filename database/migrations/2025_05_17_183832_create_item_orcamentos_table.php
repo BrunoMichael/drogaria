@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('item_orcamentos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('orcamento_id')->constrained('orcamentos')->onDelete('cascade');
-            $table->foreignId('produto_id')->constrained('produtos')->onDelete('restrict');
+            $table->foreignId('orcamento_id')->constrained('pessoas')->onDelete('cascade');
+            $table->foreignId('produto_id')->constrained('pessoas')->onDelete('restrict');
             $table->integer('quantidade');
             $table->decimal('preco_unitario', 10, 2);
             $table->decimal('desconto', 10, 2)->default(0);

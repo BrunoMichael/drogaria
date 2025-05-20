@@ -7,51 +7,55 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Vendedor
+ * Class Pessoa
  *
- * Representa um vendedor que realiza orçamentos para clientes.
+ * Representa uma pessoa que pode ser cliente, vendedor ou ambos.
  *
  * @property int $id
  * @property int $codigo
  * @property string $nome
+ * @property bool $eh_cliente
+ * @property bool $eh_vendedor
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Orcamento[] $orcamentos
  * @property-read int|null $orcamentos_count
  */
-class Vendedor extends Model
+class Pessoa extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'nome',
+        'eh_cliente',
+        'eh_vendedor',
+    ];
+
+    protected $casts = [
+        'eh_cliente' => 'boolean',
+        'eh_vendedor' => 'boolean',
     ];
 
     /**
-     * Gera o código sequencial automático para o vendedor.
+     * Evento de criação da pessoa para gerar o código incremental único.
      */
     public static function boot()
     {
         parent::boot();
 
-        static::creating(function ($vendedor) {
-            $ultimoVendedor = self::orderByDesc('codigo')->first();
-            if ($ultimoVendedor) {
-                $vendedor->codigo = $ultimoVendedor->codigo + 1;
-            } else {
-                $vendedor->codigo = 1001;
-            }
+        static::creating(function ($pessoa) {
+            $ultima = self::orderByDesc('codigo')->first();
+            $pessoa->codigo = $ultima ? $ultima->codigo + 1 : 1001;
         });
     }
 
     /**
-     * Relacionamento: Vendedor possui muitos orçamentos.
-     *
-     * @return HasMany
+     * Relacionamento: Pessoa possui muitos orçamentos.
+     * Apenas se for cliente.
      */
     public function orcamentos(): HasMany
     {
-        return $this->hasMany(Orcamento::class);
+        return $this->hasMany(Orcamento::class, 'cliente_id');
     }
 }

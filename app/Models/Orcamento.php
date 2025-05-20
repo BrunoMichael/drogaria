@@ -19,8 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @property-read \App\Models\Vendedor $vendedor
- * @property-read \App\Models\Cliente $cliente
+ * @property-read \App\Models\Pessoa $vendedor
+ * @property-read \App\Models\Pessoa $cliente
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemOrcamento[] $itens
  * @property-read int|null $itens_count
  */
@@ -34,23 +34,23 @@ class Orcamento extends Model
     ];
 
     /**
-     * Relacionamento: Orcamento pertence a um vendedor.
+     * Relacionamento: Orcamento pertence a um vendedor (Pessoa com eh_vendedor = true).
      *
      * @return BelongsTo
      */
     public function vendedor(): BelongsTo
     {
-        return $this->belongsTo(Vendedor::class);
+        return $this->belongsTo(Pessoa::class, 'vendedor_id');
     }
 
     /**
-     * Relacionamento: Orcamento pertence a um cliente.
+     * Relacionamento: Orcamento pertence a um cliente (Pessoa com eh_cliente = true).
      *
      * @return BelongsTo
      */
     public function cliente(): BelongsTo
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Pessoa::class, 'cliente_id');
     }
 
     /**

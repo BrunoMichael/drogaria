@@ -1,25 +1,22 @@
 <?php
 
-namespace App\Filament\Resources\ClienteResource\Pages;
+namespace App\Filament\Resources\PessoaResource\Pages;
 
-use App\Filament\Resources\ClienteResource;
+use App\Filament\Resources\PessoaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 /**
- * Página responsável pela edição de registros de Cliente.
- *
- * Esta classe estende EditRecord e define o resource associado,
- * além de incluir ações no cabeçalho, como a ação de exclusão.
+ * Página responsável pela edição de registros de Pessoa.
  */
-class EditCliente extends EditRecord
+class EditPessoa extends EditRecord
 {
     /**
      * Define o resource associado a esta página de edição.
      *
-     * @var class-string<ClienteResource>
+     * @var class-string<PessoaResource>
      */
-    protected static string $resource = ClienteResource::class;
+    protected static string $resource = PessoaResource::class;
 
     /**
      * Define as ações disponíveis no cabeçalho da página de edição.
