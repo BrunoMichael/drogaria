@@ -27,27 +27,27 @@ Você pode seguir o guia completo de instalação do ambiente no Windows:
 
 ## 🚀 Como Rodar o Projeto
 
-1. Clone o repositório:
+**1.** Clone o repositório:
 
-```bash
-git clone https://github.com/BrunoMichael/drogaria.git
-cd drogaria
-```
+    ```bash
+    git clone https://github.com/BrunoMichael/drogaria.git
+    cd drogaria
+    ```
 
-2. Instale as dependências do PHP:
+**2.** Instale as dependências do PHP:
 
-```bash
-composer install
-```
+    ```bash
+    composer install
+    ```
 
-3. Copie o arquivo de ambiente e gere a key:
+**3.** Copie o arquivo de ambiente e gere a key:
 
-```bash
-cp .env.example .env
-php artisan key:generate
-```
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-4. Configure o banco de dados no arquivo `.env`.
+**4.** Configure o banco de dados no arquivo `.env`.
 
     Exemplo: 
 
@@ -64,17 +64,24 @@ php artisan key:generate
 
     Certifique-se de que o MySQL esteja rodando e que o banco de dados especificado (`drogaria`) exista. Você pode criar o banco manualmente ou usar uma migration depois de instalar as dependências.
 
-5. Rode as migrations e seeders (se houver):
+**5.** Rode as migrations e seeders (se houver):
 
-```bash
-php artisan migrate
-```
+- Migrations:
 
-6. Inicie o servidor local:
+    ```bash
+    php artisan migrate
+    ```
+- Seeders:
 
-```bash
-php artisan serve
-```
+    ```bash
+    php artisan db:seed
+    ```
+
+**6.** Inicie o servidor local:
+
+    ```bash
+    php artisan serve
+    ```
 
 ---
 
