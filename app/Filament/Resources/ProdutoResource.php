@@ -35,6 +35,12 @@ class ProdutoResource extends Resource
      * @var string|null
      */
     protected static ?string $navigationGroup = 'Cadastros';
+
+    /**
+     * Posição do recurso no menu de navegação.
+     *
+     * @var int|null
+     */
     protected static ?int $navigationSort = 1;
 
     /**
@@ -47,12 +53,6 @@ class ProdutoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('codigo')
-                    ->label('Código')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-
                 Forms\Components\TextInput::make('descricao')
                     ->label('Descrição')
                     ->required()

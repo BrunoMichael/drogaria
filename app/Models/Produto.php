@@ -28,10 +28,22 @@ class Produto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'codigo',
         'descricao',
         'preco',
     ];
+
+    /**
+     * Evento de criação do produto para gerar o código incremental único.
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($produto) {
+            $ultima = self::orderByDesc('codigo')->first();
+            $produto->codigo = $ultima ? $ultima->codigo + 1 : 1001;
+        });
+    }
 
     /**
      * Relacionamento: Produto pode ter muitas ofertas.
