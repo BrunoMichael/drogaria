@@ -10,6 +10,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * Relation Manager responsável pelos itens de um orçamento.
@@ -76,6 +77,7 @@ class ItensRelationManager extends RelationManager
                         // Busca a melhor oferta aplicável (maior quantidade_levar possível)
                         $oferta = Oferta::where('produto_id', $produtoId)
                             ->where('quantidade_levar', '<=', $quantidade)
+                            ->whereDate('data_validade', '>=', Carbon::today())
                             ->orderBy('quantidade_levar', 'desc')
                             ->first();
 
@@ -143,6 +145,7 @@ class ItensRelationManager extends RelationManager
                         // Busca a melhor oferta aplicável
                         $oferta = $record->produto->ofertas()
                             ->where('quantidade_levar', '<=', $record->quantidade)
+                            ->whereDate('data_validade', '>=', Carbon::today())
                             ->orderBy('quantidade_levar', 'desc')
                             ->first();
 
