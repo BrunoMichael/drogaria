@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vendedor_id')->constrained('pessoas')->onDelete('restrict');
             $table->foreignId('cliente_id')->constrained('pessoas')->onDelete('restrict');
+            $table->enum('status', ['rascunho', 'finalizado', 'cancelado'])->default('rascunho');
             $table->timestamps();
         });
     }
