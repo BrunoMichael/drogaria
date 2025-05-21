@@ -28,37 +28,29 @@ Você pode seguir o guia completo de instalação do ambiente no Windows:
 ## 🚀 Como Rodar o Projeto
 
 **1.** Clone o repositório:
-
-    ```bash
+  
     git clone https://github.com/BrunoMichael/drogaria.git
     cd drogaria
-    ```
-
+   
 **2.** Instale as dependências do PHP:
 
-    ```bash
     composer install
-    ```
 
 **3.** Copie o arquivo de ambiente e gere a key:
 
-    ```bash
     cp .env.example .env
     php artisan key:generate
-    ```
 
 **4.** Configure o banco de dados no arquivo `.env`.
 
     Exemplo: 
 
-    ```dotenv
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
     DB_DATABASE=drogaria
     DB_USERNAME=root
     DB_PASSWORD=admin123+
-    ```
 
     > ⚠️ **Atenção:** Não use aspas no valor da senha, a menos que ela contenha espaços. Aspas desnecessárias podem causar falha na conexão.
 
@@ -68,20 +60,15 @@ Você pode seguir o guia completo de instalação do ambiente no Windows:
 
 - Migrations:
 
-    ```bash
     php artisan migrate
-    ```
+
 - Seeders:
 
-    ```bash
     php artisan db:seed
-    ```
 
 **6.** Inicie o servidor local:
 
-    ```bash
     php artisan serve
-    ```
 
 ---
 
