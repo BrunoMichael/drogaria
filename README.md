@@ -43,7 +43,7 @@ Você pode seguir o guia completo de instalação do ambiente no Windows:
 
 **4.** Configure o banco de dados no arquivo `.env`.
 
-    Exemplo: 
+    - Exemplo: 
 
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
