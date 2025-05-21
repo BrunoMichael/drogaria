@@ -32,8 +32,15 @@ class OfertaResource extends Resource
     /**
      * Grupo de navegação no painel.
      */
-    protected static ?string $navigationGroup = 'Promoções';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Administração';
+
+    /**
+     * Posição do recurso no menu de navegação.
+     *
+     * @var int|null
+     */
+    protected static ?int $navigationSort = 3;
+
     /**
      * Define o formulário de criação/edição de ofertas.
      *
@@ -64,6 +71,11 @@ class OfertaResource extends Resource
                     ->numeric()
                     ->integer()
                     ->lt('quantidade_levar'),
+
+                Forms\Components\DatePicker::make('data_validade')
+                    ->label('Data de Validade')
+                    ->required()
+                    ->minDate(now()), 
             ]);
     }
 
@@ -87,6 +99,11 @@ class OfertaResource extends Resource
 
                 Tables\Columns\TextColumn::make('quantidade_pagar')
                     ->label('Pagar'),
+
+                Tables\Columns\TextColumn::make('data_validade')
+                    ->label('Data de Validade')
+                    ->date()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

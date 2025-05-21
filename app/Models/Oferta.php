@@ -28,6 +28,7 @@ class Oferta extends Model
         'produto_id',
         'quantidade_levar',
         'quantidade_pagar',
+        'data_validade',
     ];
 
     /**
