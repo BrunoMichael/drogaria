@@ -12,22 +12,47 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
-
+use Filament\Tables\Columns\TextColumn;
 
 /**
- * Class OrcamentoResource
- *
- * Recurso do Filament para gerenciar registros de orçamentos.
+ * Classe Resource para gerenciar o CRUD de Orçamentos no painel Filament.
  */
 class OrcamentoResource extends Resource
 {
+    /**
+     * Define o model associado a este resource.
+     *
+     * @var class-string<Orcamento>
+     */
     protected static ?string $model = Orcamento::class;
 
+    /**
+     * Ícone do menu de navegação do Filament.
+     *
+     * @var string|null
+     */
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
+    /**
+     * Grupo de navegação no painel administrativo.
+     *
+     * @var string|null
+     */
     protected static ?string $navigationGroup = 'Orçamentos';
-    protected static ?int $navigationSort = 3;
 
+    /**
+     * Posição do recurso no menu de navegação.
+     *
+     * @var int|null
+     */
+    protected static ?int $navigationSort = 2;
+
+    /**
+     * Define os campos do formulário de criação/edição de orçamento.
+     *
+     * @param Form $form
+     * @return Form
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -38,7 +63,6 @@ class OrcamentoResource extends Resource
                     ->searchable()
                     ->preload()
                     ->options(fn() => Pessoa::where('eh_vendedor', true)->pluck('nome', 'id'))
-                    ->searchable()
                     ->getSearchResultsUsing(function (string $search) {
                         return Pessoa::where('eh_vendedor', true)
                             ->where(function ($query) use ($search) {
@@ -98,7 +122,12 @@ class OrcamentoResource extends Resource
             ]);
     }
 
-
+    /**
+     * Define as colunas da tabela de listagem de orçamentos.
+     *
+     * @param Table $table
+     * @return Table
+     */
     public static function table(Table $table): Table
     {
         return $table
@@ -106,6 +135,16 @@ class OrcamentoResource extends Resource
                 Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('vendedor.nome')->label('Vendedor')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('cliente.nome')->label('Cliente')->searchable()->sortable(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'finalizado' => 'success',
+                        'cancelado' => 'danger',
+                        'rascunho' => 'warning',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state) => ucfirst($state)),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -120,6 +159,11 @@ class OrcamentoResource extends Resource
             ]);
     }
 
+    /**
+     * Define os relation managers associados ao recurso.
+     *
+     * @return array<int, class-string>
+     */
     public static function getRelations(): array
     {
         return [
@@ -127,6 +171,11 @@ class OrcamentoResource extends Resource
         ];
     }
 
+    /**
+     * Define as páginas de CRUD disponíveis para o recurso.
+     *
+     * @return array<string, \Filament\Resources\Pages\Page>
+     */
     public static function getPages(): array
     {
         return [
