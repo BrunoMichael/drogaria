@@ -35,6 +35,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'pessoa_id'
     ];
 
     /**
@@ -59,4 +60,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+        /**
+     * Relacionamento: Usuário pertence a uma Pessoa.
+     *
+     * @return BelongsTo
+     */
+    public function pessoa()
+    {
+        return $this->belongsTo(Pessoa::class, 'pessoa_id');
+    }
+
 }

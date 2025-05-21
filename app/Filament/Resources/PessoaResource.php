@@ -35,8 +35,13 @@ class PessoaResource extends Resource
      * Grupo de navegação do menu lateral.
      */
     protected static ?string $navigationGroup = 'Cadastros';
-    protected static ?int $navigationSort = 1;
 
+    /**
+     * Posição do recurso no menu de navegação.
+     *
+     * @var int|null
+     */
+    protected static ?int $navigationSort = 1;
 
     /**
      * Define o formulário de criação/edição.
@@ -54,6 +59,7 @@ class PessoaResource extends Resource
                 ->schema([
                     Forms\Components\Toggle::make('eh_cliente')
                         ->label('É Cliente')
+                        ->default(true)
                         ->columnSpan(1),
 
                     Forms\Components\Toggle::make('eh_vendedor')
