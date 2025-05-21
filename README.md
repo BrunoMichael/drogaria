@@ -50,9 +50,9 @@ Você pode seguir o guia completo de instalação do ambiente no Windows:
     DB_USERNAME=root
     DB_PASSWORD=admin123+
 
-    > ⚠️ **Atenção:** Não use aspas no valor da senha, a menos que ela contenha espaços. Aspas desnecessárias podem causar falha na conexão.
+> ⚠️ **Atenção:** Não use aspas no valor da senha, a menos que ela contenha espaços. Aspas desnecessárias podem causar falha na conexão.
 
-    Certifique-se de que o MySQL esteja rodando e que o banco de dados especificado (`drogaria`) exista. Você pode criar o banco manualmente ou usar uma migration depois de instalar as dependências.
+Certifique-se de que o MySQL esteja rodando e que o banco de dados especificado (`drogaria`) exista. Você pode criar o banco manualmente ou usar uma migration depois de instalar as dependências.
 
 **5.** Rode as migrations e seeders (se houver):
 
