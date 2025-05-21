@@ -23,20 +23,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Criação do usuário administrador com email verificado e senha criptografada.
-        $user = User::create([
-            'name' => 'Admin',
+        $pessoa = Pessoa::create([
+            'nome' => 'Admin',
             'email' => 'admin@drogaria.com.br',
-            'password' => Hash::make('admin'), // Senha criptografada por segurança.
-            'email_verified_at' => now(),      // Marca o email como verificado.
+            'eh_vendedor' => true,
+            'eh_cliente' => false,
         ]);
 
-        // Criação do registro de pessoa associada ao usuário, habilitado como vendedor.
-        Pessoa::create([
-            'nome' => $user->name,
-            'email' => $user->email,
-            'eh_vendedor' => true,  // Define que a pessoa é um vendedor.
-            'eh_cliente' => false,  // Define que a pessoa não é cliente.
+        User::create([
+            'name' => $pessoa->nome,
+            'email' => $pessoa->email,
+            'password' => Hash::make('admin'),
+            'email_verified_at' => now(),
+            'pessoa_id' => $pessoa->id,
         ]);
     }
 }
