@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\PessoaResource\Pages;
 
-use App\Filament\Resources\PessoaResource;
 use Filament\Actions;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PessoaResource;
 
 /**
  * Página responsável pela edição de registros de Pessoa.
@@ -26,7 +27,21 @@ class EditPessoa extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn () => in_array(Auth::user()?->permission, ['gestor', 'gerente'])),
         ];
+    }
+    /**
+     * Define se a página pode ser acessada pelo usuário autenticado.
+     * 
+     * Neste caso, apenas usuários com permissão ou permissões podem acessar
+     * a página associada a este recurso.
+     *
+     * @param array $parameters Parâmetros da rota, se houver.
+     * @return bool
+     */
+    public static function canAccess(array $parameters = []): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente', 'vendedor']);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OfertaResource\Pages;
 
 use App\Filament\Resources\OfertaResource;
 use Filament\Actions;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\EditRecord;
 
 /**
@@ -29,7 +30,22 @@ class EditOferta extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn () => Auth::user()?->permission === 'gestor'),
         ];
+    }
+
+    /**
+     * Define se a página pode ser acessada pelo usuário autenticado.
+     * 
+     * Neste caso, apenas usuários com permissão ou permissões podem acessar
+     * a página associada a este recurso.
+     *
+     * @param array $parameters Parâmetros da rota, se houver.
+     * @return bool
+     */
+    public static function canAccess(array $parameters = []): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente']);
     }
 }

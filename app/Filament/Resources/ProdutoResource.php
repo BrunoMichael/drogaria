@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProdutoResource\Pages;
-use App\Models\Produto;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Produto;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\ProdutoResource\Pages;
 
 /**
  * Classe Resource para gerenciar o CRUD de Produtos no painel Filament.
@@ -106,9 +107,11 @@ class ProdutoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn () => Auth::user()?->permission === 'gestor'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Configurar ação em massa
             ]);
     }
 
@@ -136,5 +139,25 @@ class ProdutoResource extends Resource
             'create' => Pages\CreateProduto::route('/create'),
             'edit' => Pages\EditProduto::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Define se o recurso pode ser visualizado na listagem geral do painel.
+     * 
+     * @return bool
+     */
+    public static function canViewAny(): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente']);
+    }
+
+    /**
+     * Define se o recurso deve aparecer no menu de navegação do painel.
+     * 
+     * @return bool
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente']);
     }
 }

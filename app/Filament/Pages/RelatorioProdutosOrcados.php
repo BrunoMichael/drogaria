@@ -7,6 +7,7 @@ use Filament\Pages\Page;
 use App\Models\ItemOrcamento;
 use Illuminate\Support\Facades\DB;
 use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -99,5 +100,25 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
         $total = $query->sum(DB::raw('quantidade * preco_unitario'));
 
         return 'R$ ' . number_format($total, 2, ',', '.');
+    }
+
+    /**
+     * Define se o recurso pode ser visualizado na listagem geral do painel.
+     * 
+     * @return bool
+     */
+    public static function canViewAny(): bool
+    {
+        return Auth::user()?->permission === 'gestor';
+    }
+
+    /**
+     * Define se o recurso deve aparecer no menu de navegação do painel.
+     * 
+     * @return bool
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()?->permission === 'gestor';
     }
 }

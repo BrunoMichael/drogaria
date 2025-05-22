@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\OrcamentoResource\Pages;
 
-use App\Filament\Resources\OrcamentoResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\OrcamentoResource;
 
 /**
  * Página responsável pela edição de registros de Orçamento.
@@ -29,7 +30,22 @@ class EditOrcamento extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn () => in_array(Auth::user()?->permission, ['gestor', 'gerente'])),
         ];
+    }
+
+    /**
+     * Define se a página pode ser acessada pelo usuário autenticado.
+     * 
+     * Neste caso, apenas usuários com permissão ou permissões podem acessar
+     * a página associada a este recurso.
+     *
+     * @param array $parameters Parâmetros da rota, se houver.
+     * @return bool
+     */
+    public static function canAccess(array $parameters = []): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente', 'vendedor']);
     }
 }

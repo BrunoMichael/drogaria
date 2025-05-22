@@ -2,17 +2,18 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use App\Models\Pessoa;
+use Filament\Forms\Form;
+use App\Models\Orcamento;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Notifications\Notification;
 use App\Filament\Resources\OrcamentoResource\Pages;
 use App\Filament\Resources\OrcamentoResource\RelationManagers\ItensRelationManager;
-use App\Models\Orcamento;
-use App\Models\Pessoa;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Notifications\Notification;
-use Filament\Tables\Columns\TextColumn;
 
 /**
  * Classe Resource para gerenciar o CRUD de Orçamentos no painel Filament.
@@ -153,9 +154,11 @@ class OrcamentoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn () => in_array(Auth::user()?->permission, ['gestor', 'gerente'])),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Configurar ação em massa
             ]);
     }
 
@@ -183,5 +186,25 @@ class OrcamentoResource extends Resource
             'create' => Pages\CreateOrcamento::route('/create'),
             'edit' => Pages\EditOrcamento::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Define se o recurso pode ser visualizado na listagem geral do painel.
+     * 
+     * @return bool
+     */
+    public static function canViewAny(): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente', 'vendedor']);
+    }
+
+    /**
+     * Define se o recurso deve aparecer no menu de navegação do painel.
+     * 
+     * @return bool
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente', 'vendedor']);
     }
 }

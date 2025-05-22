@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\OfertaResource\Pages;
 
-use App\Filament\Resources\OfertaResource;
 use Filament\Actions;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\OfertaResource;
 
 /**
  * Página responsável pela listagem dos registros de Oferta.
@@ -31,5 +32,19 @@ class ListOfertas extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    /**
+     * Define se a página pode ser acessada pelo usuário autenticado.
+     * 
+     * Neste caso, apenas usuários com permissão ou permissões podem acessar
+     * a página associada a este recurso.
+     *
+     * @param array $parameters Parâmetros da rota, se houver.
+     * @return bool
+     */
+    public static function canAccess(array $parameters = []): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente']);
     }
 }

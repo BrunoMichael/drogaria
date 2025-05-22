@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\User;
-use App\Models\Pessoa;
 use Filament\Forms;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use App\Models\Pessoa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Filament\Resources\UserResource\Pages;
 
@@ -105,9 +106,11 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn () => Auth::user()?->permission === 'gestor'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Configurar ação em massa
             ]);
     }
 
@@ -123,5 +126,25 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Define se o recurso pode ser visualizado na listagem geral do painel.
+     * 
+     * @return bool
+     */
+    public static function canViewAny(): bool
+    {
+        return Auth::user()?->permission === 'gestor';
+    }
+
+    /**
+     * Define se o recurso deve aparecer no menu de navegação do painel.
+     * 
+     * @return bool
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()?->permission === 'gestor';
     }
 }

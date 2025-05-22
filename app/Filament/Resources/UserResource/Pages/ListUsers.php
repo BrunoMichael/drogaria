@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Filament\Resources\UserResource;
 use Filament\Actions;
+use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\UserResource;
 use Filament\Resources\Pages\ListRecords;
 
 /**
@@ -34,8 +35,17 @@ class ListUsers extends ListRecords
         ];
     }
 
+    /**
+     * Define se a página pode ser acessada pelo usuário autenticado.
+     * 
+     * Neste caso, apenas usuários com permissão ou permissões podem acessar
+     * a página associada a este recurso.
+     *
+     * @param array $parameters Parâmetros da rota, se houver.
+     * @return bool
+     */
     public static function canAccess(array $parameters = []): bool
     {
-        return auth()->user()->permission === 'vendedor';
+        return Auth::user()?->permission === 'gestor';
     }
 }

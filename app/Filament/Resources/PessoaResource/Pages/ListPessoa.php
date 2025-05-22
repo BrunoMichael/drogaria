@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\PessoaResource\Pages;
 
-use App\Filament\Resources\PessoaResource;
 use Filament\Actions;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\PessoaResource;
 
 /**
  * Página responsável pela listagem dos registros de Pessoa.
@@ -28,5 +29,19 @@ class ListPessoas extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    /**
+     * Define se a página pode ser acessada pelo usuário autenticado.
+     * 
+     * Neste caso, apenas usuários com permissão ou permissões podem acessar
+     * a página associada a este recurso.
+     *
+     * @param array $parameters Parâmetros da rota, se houver.
+     * @return bool
+     */
+    public static function canAccess(array $parameters = []): bool
+    {
+        return in_array(Auth::user()?->permission, ['gestor', 'gerente', 'vendedor']);
     }
 }

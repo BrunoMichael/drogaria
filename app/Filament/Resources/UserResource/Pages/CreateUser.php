@@ -5,6 +5,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use Filament\Resources\Pages\CreateRecord;
 use App\Models\Pessoa;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Página responsável pela criação de novos registros de usuário.
@@ -50,5 +51,19 @@ class CreateUser extends CreateRecord
         $data['name'] = $pessoa->nome;
 
         return $data;
+    }
+
+    /**
+     * Define se a página pode ser acessada pelo usuário autenticado.
+     * 
+     * Neste caso, apenas usuários com permissão ou permissões podem acessar
+     * a página associada a este recurso.
+     *
+     * @param array $parameters Parâmetros da rota, se houver.
+     * @return bool
+     */
+    public static function canAccess(array $parameters = []): bool
+    {
+        return Auth::user()?->permission === 'gestor';
     }
 }
