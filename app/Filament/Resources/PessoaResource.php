@@ -12,6 +12,8 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PessoaResource\Pages;
+use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Resource PessoaResource
@@ -117,7 +119,18 @@ class PessoaResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn () => in_array(Auth::user()?->permission, ['gestor', 'gerente'])),
+                    ->visible(fn () => in_array(Auth::user()?->permission, ['gestor', 'gerente']))
+                    ->action(function (Model $record) {
+                        try {
+                            $record->delete();
+                        } catch (\Exception $e) {
+                            Notification::make()
+                                ->title('Erro ao excluir')
+                                ->body($e->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
             ])
             ->bulkActions([
                 // Configurar ação em massa

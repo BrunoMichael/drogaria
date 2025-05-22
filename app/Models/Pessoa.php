@@ -48,6 +48,12 @@ class Pessoa extends Model
             $ultima = self::orderByDesc('codigo')->first();
             $pessoa->codigo = $ultima ? $ultima->codigo + 1 : 1001;
         });
+
+        static::deleting(function ($pessoa) {
+            if ($pessoa->orcamentos()->exists()) {
+                throw new \Exception('Não é possível excluir uma pessoa com orçamentos relacionados.');
+            }
+        });
     }
 
     /**
