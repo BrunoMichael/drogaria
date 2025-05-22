@@ -33,4 +33,9 @@ class ListUsers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public static function canAccess(array $parameters = []): bool
+    {
+        return auth()->user()->permission === 'vendedor';
+    }
 }

@@ -76,6 +76,15 @@ class UserResource extends Resource
                     ->dehydrated(fn($state) => filled($state))
                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
                     ->maxLength(255),
+
+                Forms\Components\Select::make('permission')
+                    ->label('Permissão')
+                    ->options([
+                        'gestor' => 'Gestor',
+                        'gerente' => 'Gerente',
+                        'vendedor' => 'Vendedor',
+                    ])
+                    ->required(),
             ]);
     }
 
