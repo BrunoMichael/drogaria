@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 21/05/2025 às 02:56
+-- Tempo de geração: 22/05/2025 às 16:43
 -- Versão do servidor: 9.3.0
 -- Versão do PHP: 8.2.28
 
@@ -38,8 +38,8 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('drogaria_cache_livewire-rate-limiter:a17961fa74e9275d529f489537f179c05d50c2f3', 'i:1;', 1747794556),
-('drogaria_cache_livewire-rate-limiter:a17961fa74e9275d529f489537f179c05d50c2f3:timer', 'i:1747794556;', 1747794556);
+('drogaria_cache_livewire-rate-limiter:a17961fa74e9275d529f489537f179c05d50c2f3', 'i:2;', 1747926630),
+('drogaria_cache_livewire-rate-limiter:a17961fa74e9275d529f489537f179c05d50c2f3:timer', 'i:1747926630;', 1747926630);
 
 -- --------------------------------------------------------
 
@@ -85,6 +85,14 @@ CREATE TABLE `item_orcamentos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `item_orcamentos`
+--
+
+INSERT INTO `item_orcamentos` (`id`, `orcamento_id`, `produto_id`, `quantidade`, `preco_unitario`, `desconto`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 4, 4.95, 50.00, '2025-05-22 16:17:36', '2025-05-22 16:17:36'),
+(2, 1, 1, 3, 4.95, 0.00, '2025-05-22 16:23:11', '2025-05-22 16:23:11');
 
 -- --------------------------------------------------------
 
@@ -145,7 +153,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2025_05_17_182832_create_pessoas_table', 1),
 (6, '2025_05_17_183653_create_ofertas_table', 1),
 (7, '2025_05_17_183816_create_orcamentos_table', 1),
-(8, '2025_05_17_183832_create_item_orcamentos_table', 1);
+(8, '2025_05_17_183832_create_item_orcamentos_table', 1),
+(9, '2025_05_22_003218_add_permission_to_users_table', 1);
 
 -- --------------------------------------------------------
 
@@ -168,7 +177,7 @@ CREATE TABLE `ofertas` (
 --
 
 INSERT INTO `ofertas` (`id`, `produto_id`, `quantidade_levar`, `quantidade_pagar`, `data_validade`, `created_at`, `updated_at`) VALUES
-(2, 1, 2, 1, '2025-05-20', '2025-05-21 02:33:56', '2025-05-21 02:33:56');
+(1, 1, 2, 1, '2025-05-21', '2025-05-22 16:16:57', '2025-05-22 16:16:57');
 
 -- --------------------------------------------------------
 
@@ -190,7 +199,7 @@ CREATE TABLE `orcamentos` (
 --
 
 INSERT INTO `orcamentos` (`id`, `vendedor_id`, `cliente_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 'rascunho', '2025-05-21 05:30:21', '2025-05-21 05:30:21');
+(1, 1, 2, 'finalizado', '2025-05-22 16:12:57', '2025-05-22 16:36:05');
 
 -- --------------------------------------------------------
 
@@ -226,8 +235,8 @@ CREATE TABLE `pessoas` (
 --
 
 INSERT INTO `pessoas` (`id`, `codigo`, `nome`, `email`, `eh_cliente`, `eh_vendedor`, `created_at`, `updated_at`) VALUES
-(1, '1001', 'Admin', 'admin@drogaria.com.br', 0, 1, '2025-05-21 05:28:03', '2025-05-21 05:28:03'),
-(2, '1002', 'Cleide Santos', NULL, 1, 0, '2025-05-21 05:30:01', '2025-05-21 05:30:01');
+(1, '1001', 'Admin', 'admin@drogaria.com.br', 0, 1, '2025-05-22 15:09:05', '2025-05-22 15:09:05'),
+(2, '1002', 'Gustavo Sousa', NULL, 1, 0, '2025-05-22 15:57:30', '2025-05-22 15:57:30');
 
 -- --------------------------------------------------------
 
@@ -249,7 +258,7 @@ CREATE TABLE `produtos` (
 --
 
 INSERT INTO `produtos` (`id`, `codigo`, `descricao`, `preco`, `created_at`, `updated_at`) VALUES
-(1, '1001', 'DORFLEX', 4.95, '2025-05-21 05:28:37', '2025-05-21 05:28:37');
+(1, '1001', 'DORFLEX', 4.95, '2025-05-22 16:16:32', '2025-05-22 16:16:32');
 
 -- --------------------------------------------------------
 
@@ -271,7 +280,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('JXSSlsoqLmKiwUGX7OW21BlXgmfOrNoc6S1wKvXs', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 OPR/118.0.0.0 (Edition std-2)', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiWGlxQzVxcWdjVUhkV0JyejBaTWM4dHc2UTNyZFdudXBjMU53U2RVbSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM4OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vb3JjYW1lbnRvcyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czoxNzoicGFzc3dvcmRfaGFzaF93ZWIiO3M6NjA6IiQyeSQxMiROZVVITFJMTm1CZWRwcmRZWkpyV0pPLllQeHUwbExsdllYM1c2Ri5PdXVxWlN0ekdBYlh2aSI7czo4OiJmaWxhbWVudCI7YTowOnt9fQ==', 1747796003);
+('FiHLgAWUQdL7JZoPNjp7Uvm3KuwDCmlustpdeZYo', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiOThrQks4aVFTUXVrNmM1MDhsT1JjSlZYVk03aHBUYUdBTkNvYXRDTyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wZXNzb2FzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjE3OiJwYXNzd29yZF9oYXNoX3dlYiI7czo2MDoiJDJ5JDEyJERVNFg1WTRDSllCbUp0a3U4cEtzRC5rV3ZVbm9ZSjdsaHlvc1Q3enRncGYwVXI4T1A4SWNlIjtzOjg6ImZpbGFtZW50IjthOjA6e319', 1747932142);
 
 -- --------------------------------------------------------
 
@@ -288,15 +297,16 @@ CREATE TABLE `users` (
   `pessoa_id` int NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `permission` enum('gestor','gerente','vendedor') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'vendedor'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Despejando dados para a tabela `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `pessoa_id`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin@drogaria.com.br', '2025-05-21 05:28:03', '$2y$12$NeUHLRLNmBedprdYZJrWJO.YPxu0lLlvYX3W6F.OuuqZStzGAbXvi', 1, NULL, '2025-05-21 05:28:03', '2025-05-21 05:28:03');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `pessoa_id`, `remember_token`, `created_at`, `updated_at`, `permission`) VALUES
+(1, 'Admin', 'admin@drogaria.com.br', '2025-05-22 15:09:06', '$2y$12$DU4X5Y4CJYBmJtku8pKsD.kWvUnoYJ7lhyosT7ztgpf0Ur8OP8Ice', 1, 'rYDB2oOLRfcN3ls668cH8WqS6I4UTP2rXMUhwjSED8ZziV7IPfrfafGSbwsl', '2025-05-22 15:09:06', '2025-05-22 15:09:06', 'gestor');
 
 --
 -- Índices para tabelas despejadas
@@ -412,7 +422,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT de tabela `item_orcamentos`
 --
 ALTER TABLE `item_orcamentos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `jobs`
@@ -424,13 +434,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT de tabela `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `ofertas`
 --
 ALTER TABLE `ofertas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `orcamentos`
