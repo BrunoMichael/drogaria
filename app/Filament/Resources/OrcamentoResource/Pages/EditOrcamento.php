@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\OrcamentoResource\Pages;
 
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
 use App\Filament\Resources\OrcamentoResource;
+use Filament\Notifications\Notification;
+
 
 /**
  * Página responsável pela edição de registros de Orçamento.
@@ -30,8 +33,39 @@ class EditOrcamento extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('finalizar')
+                ->label('Finalizar')
+                ->color('success')
+                ->icon('heroicon-o-check')
+                ->visible(fn() => $this->record->status === 'rascunho')
+                ->requiresConfirmation()
+                ->action(function () {
+                    $this->record->status = 'finalizado';
+                    $this->record->save();
+
+                    Notification::make()
+                        ->title('Orçamento finalizado com sucesso.')
+                        ->success()
+                        ->send();
+                }),
+
+            Action::make('cancelar')
+                ->label('Cancelar')
+                ->color('danger')
+                ->icon('heroicon-o-x-circle')
+                ->visible(fn() => $this->record->status === 'rascunho')
+                ->requiresConfirmation()
+                ->action(function () {
+                    $this->record->status = 'cancelado';
+                    $this->record->save();
+                    
+                    Notification::make()
+                        ->title('Orçamento cancelado com sucesso.')
+                        ->danger()
+                        ->send();
+                }),
             Actions\DeleteAction::make()
-                ->visible(fn () => in_array(Auth::user()?->permission, ['gestor', 'gerente'])),
+                ->visible(fn() => in_array(Auth::user()?->permission, ['gestor', 'gerente'])),
         ];
     }
 
