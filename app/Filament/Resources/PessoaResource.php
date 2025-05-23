@@ -69,6 +69,10 @@ class PessoaResource extends Resource
                         ->label('É Vendedor')
                         ->columnSpan(1)
                         ->visible(function (callable $get) {
+                            if (Auth::user()?->permission !== 'gestor') {
+                                return false;
+                            }
+
                             $email = $get('email');
 
                             if (!$email) {
@@ -80,6 +84,7 @@ class PessoaResource extends Resource
 
                             return $pessoaExists && $userExists;
                         }),
+
                 ]),
         ]);
     }
@@ -119,7 +124,7 @@ class PessoaResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn () => in_array(Auth::user()?->permission, ['gestor', 'gerente']))
+                    ->visible(fn() => in_array(Auth::user()?->permission, ['gestor', 'gerente']))
                     ->action(function (Model $record) {
                         try {
                             $record->delete();
