@@ -70,9 +70,7 @@ Certifique-se de que o MySQL esteja rodando e que o banco de dados especificado 
 
 **6.** Inicie o servidor local:
 
-    ```bash
     php artisan serve
-    ```
 
 ---
 
