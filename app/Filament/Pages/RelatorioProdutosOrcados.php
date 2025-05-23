@@ -13,22 +13,63 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * Página personalizada no painel Filament que exibe um relatório
+ * detalhado dos produtos orçados, com filtros por data, status e produto.
+ *
+ * Apenas usuários com permissão "gestor" podem visualizar ou acessar
+ * essa página via navegação.
+ */
 class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
 
+    /**
+     * Ícone que representa a página na navegação lateral.
+     *
+     * @var string|null
+     */
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
+
+    /**
+     * Agrupamento da página na navegação.
+     *
+     * @var string|null
+     */
     protected static ?string $navigationGroup = 'Administração';
+
+    /**
+     * Ordem de exibição no menu de navegação (menor = mais acima).
+     *
+     * @var int|null
+     */
     protected static ?int $navigationSort = 3;
+
+    /**
+     * Título da página exibido no topo e na navegação.
+     *
+     * @var string|null
+     */
     protected static ?string $title = 'Relatório';
+
+    /**
+     * Caminho da view Blade personalizada associada à página.
+     *
+     * @var string
+     */
     protected static string $view = 'filament.pages.relatorio-produtos-orcados';
 
+    /**
+     * Define a tabela de exibição dos dados com colunas, filtros e ordenação.
+     *
+     * @param Tables\Table $table
+     * @return Tables\Table
+     */
     public function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->query(
-                ItemOrcamento::query()
-                    ->with(['orcamento.cliente', 'produto'])
+                ItemOrcamento::query()->with(['orcamento.cliente', 'produto'])
             )
             ->columns([
                 TextColumn::make('orcamento.id')->label('Orçamento'),
@@ -36,25 +77,25 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
                 TextColumn::make('produto.descricao')->label('Produto'),
                 TextColumn::make('quantidade'),
                 TextColumn::make('preco_unitario')->money('BRL'),
+
+                // Coluna calculada com base na quantidade, preço unitário e desconto
                 TextColumn::make('total')
                     ->label('Total')
                     ->getStateUsing(function ($record) {
-                        // Calcula o total considerando o desconto
                         $precoTotalSemDesconto = $record->quantidade * $record->preco_unitario;
 
                         if ($record->desconto > 0) {
-                            // Aplica o desconto percentual
                             $descontoValor = ($record->desconto / 100) * $precoTotalSemDesconto;
                             return $precoTotalSemDesconto - $descontoValor;
                         }
 
-                        // Sem desconto → preço cheio
                         return $precoTotalSemDesconto;
                     })
                     ->money('BRL')
                     ->alignRight(),
             ])
             ->filters([
+                // Filtro por intervalo de datas (data de criação do orçamento)
                 Filter::make('data')
                     ->form([
                         TextInput::make('data_inicial')->label('Data inicial')->type('date'),
@@ -71,6 +112,7 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
                         });
                     }),
 
+                // Filtro por status do orçamento
                 Filter::make('status')
                     ->form([
                         Select::make('status')
@@ -84,20 +126,24 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
                     ])
                     ->query(function (Builder $query, array $data) {
                         if (!empty($data['status'])) {
-                            $query->whereHas('orcamento', fn($q) => $q->whereIn('status', $data['status']));
+                            $query->whereHas('orcamento', fn($q) =>
+                                $q->whereIn('status', $data['status'])
+                            );
                         }
                         return $query;
                     }),
 
+                // Filtro por produto (código ou nome parcial)
                 Filter::make('produto')
                     ->form([
-                        TextInput::make('produto')->label('Produto (Codigo ou nome)'),
+                        TextInput::make('produto')->label('Produto (Código ou nome)'),
                     ])
                     ->query(function (Builder $query, array $data) {
                         if (!empty($data['produto'])) {
                             $query->whereHas('produto', fn($q) =>
-                            $q->where('descricao', 'like', "%{$data['produto']}%")
-                                ->orWhere('codigo', $data['produto']));
+                                $q->where('descricao', 'like', "%{$data['produto']}%")
+                                  ->orWhere('codigo', $data['produto'])
+                            );
                         }
                         return $query;
                     }),
@@ -105,6 +151,12 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
             ->defaultSort('orcamento_id', 'desc');
     }
 
+    /**
+     * Calcula o total geral dos itens exibidos na tabela,
+     * levando em consideração os filtros aplicados e os descontos.
+     *
+     * @return string Total formatado em reais.
+     */
     public function getTotalGeral(): string
     {
         $query = $this->getFilteredTableQuery();
@@ -113,12 +165,10 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
             $precoTotalSemDesconto = $item->quantidade * $item->preco_unitario;
 
             if ($item->desconto > 0) {
-                // Aplica o desconto percentual
                 $descontoValor = ($item->desconto / 100) * $precoTotalSemDesconto;
                 return $precoTotalSemDesconto - $descontoValor;
             }
 
-            // Sem desconto → preço cheio
             return $precoTotalSemDesconto;
         });
 
@@ -126,8 +176,9 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
     }
 
     /**
-     * Define se o recurso pode ser visualizado na listagem geral do painel.
-     * 
+     * Define se a página pode ser acessada por qualquer usuário autenticado.
+     * Neste caso, apenas usuários com permissão "gestor".
+     *
      * @return bool
      */
     public static function canViewAny(): bool
@@ -136,8 +187,9 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
     }
 
     /**
-     * Define se o recurso deve aparecer no menu de navegação do painel.
-     * 
+     * Define se a página deve ser exibida no menu de navegação lateral.
+     * Apenas para usuários com permissão "gestor".
+     *
      * @return bool
      */
     public static function shouldRegisterNavigation(): bool
