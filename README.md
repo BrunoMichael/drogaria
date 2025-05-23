@@ -21,7 +21,7 @@ Este sistema foi desenvolvido em PHP utilizando o framework Laravel e o painel a
 
 Você pode seguir o guia completo de instalação do ambiente no Windows:
 
-👉 [https://github.com/BrunoMichael/drogaria/blob/main/instalacao-windows.md](https://github.com/BrunoMichael/drogaria/blob/main/instalacao-windows.md)
+👉 [INSTALAÇÃO WINDOWS](https://github.com/BrunoMichael/drogaria/blob/main/instalacao-windows.md)
 
 ---
 
@@ -58,25 +58,21 @@ Certifique-se de que o MySQL esteja rodando e que o banco de dados especificado 
 
 - Migrations:
 
+    ```bash
     php artisan migrate
+    ```
 
 - Seeders:
 
+    ```bash
     php artisan db:seed
+    ```
 
 **6.** Inicie o servidor local:
 
+    ```bash
     php artisan serve
-
----
-
-## 👤 Criar Usuário Administrador
-
-Para acessar o painel Filament, crie um usuário via terminal:
-
-```bash
-php artisan make:filament-user
-```
+    ```
 
 ---
 
@@ -84,7 +80,7 @@ php artisan make:filament-user
 
 A documentação da API REST está disponível localmente após iniciar o servidor:
 
-📎 [http://127.0.0.1:8000/api/documentation](http://127.0.0.1:8000/api/documentation)
+📎 [DOCUMENTAÇÃO API](http://127.0.0.1:8000/api/documentation)
 
 ---
 
