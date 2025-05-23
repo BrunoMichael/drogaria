@@ -10,295 +10,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/clientes": {
-            "get": {
-                "tags": [
-                    "Clientes"
-                ],
-                "summary": "Retorna a lista de todos os clientes cadastrados",
-                "operationId": "b910fa16d64cfa03d6400b20f5ffbf0d",
-                "responses": {
-                    "200": {
-                        "description": "Lista completa de clientes",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "nome": {
-                                                "type": "string",
-                                                "example": "João da Silva"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2024-01-01T12:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2024-01-02T12:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/clientes/{id}": {
-            "get": {
-                "tags": [
-                    "Clientes"
-                ],
-                "summary": "Consulta um cliente específico pelo ID",
-                "operationId": "7be647ff4c2ab71c5a1f042133b13428",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Identificador único do cliente",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Dados do cliente encontrados com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "nome": {
-                                            "type": "string",
-                                            "example": "João da Silva"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-02T12:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Clientes"
-                ],
-                "summary": "Atualiza os dados de um cliente existente",
-                "operationId": "1cc735d14964cb4b25557d546e807a9c",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Identificador do cliente",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nome": {
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "example": "João da Silva"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cliente atualizado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "nome": {
-                                            "type": "string",
-                                            "example": "João da Silva"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-02T12:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Erro de validação",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Clientes"
-                ],
-                "summary": "Exclui um cliente pelo ID",
-                "operationId": "fae533cf0841c3ece1414287d89ef42b",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID do cliente a ser removido",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Cliente excluído com sucesso"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
-                    }
-                }
-            }
-        },
-        "/api/clientes": {
-            "post": {
-                "tags": [
-                    "Clientes"
-                ],
-                "summary": "Cria um novo cliente",
-                "operationId": "2a8a28c7aec782e1af95193a65053e68",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "nome"
-                                ],
-                                "properties": {
-                                    "nome": {
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "example": "João da Silva"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Cliente criado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "nome": {
-                                            "type": "string",
-                                            "example": "João da Silva"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Erro de validação",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/orcamentos": {
             "get": {
                 "tags": [
@@ -327,10 +38,14 @@
                                                 "type": "integer",
                                                 "example": 2
                                             },
-                                            "data_orcamento": {
+                                            "status": {
                                                 "type": "string",
-                                                "format": "date",
-                                                "example": "2024-05-01"
+                                                "example": "rascunho"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-05-01T10:00:00.000000Z"
                                             },
                                             "cliente": {
                                                 "properties": {
@@ -390,7 +105,7 @@
                                                                     "type": "integer",
                                                                     "example": 5
                                                                 },
-                                                                "nome": {
+                                                                "descricao": {
                                                                     "type": "string",
                                                                     "example": "Produto X"
                                                                 }
@@ -424,22 +139,18 @@
                                 "required": [
                                     "cliente_id",
                                     "vendedor_id",
-                                    "data_orcamento",
                                     "itens"
                                 ],
                                 "properties": {
                                     "cliente_id": {
+                                        "description": "ID da Pessoa que é o Cliente",
                                         "type": "integer",
                                         "example": 1
                                     },
                                     "vendedor_id": {
+                                        "description": "ID da Pessoa que é o Vendedor",
                                         "type": "integer",
                                         "example": 2
-                                    },
-                                    "data_orcamento": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-05-01"
                                     },
                                     "itens": {
                                         "type": "array",
@@ -486,10 +197,14 @@
                                             "type": "integer",
                                             "example": 2
                                         },
-                                        "data_orcamento": {
+                                        "status": {
                                             "type": "string",
-                                            "format": "date",
-                                            "example": "2024-05-01"
+                                            "example": "rascunho"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-05-01T10:00:00.000000Z"
                                         },
                                         "cliente": {
                                             "properties": {
@@ -549,7 +264,7 @@
                                                                 "type": "integer",
                                                                 "example": 5
                                                             },
-                                                            "nome": {
+                                                            "descricao": {
                                                                 "type": "string",
                                                                 "example": "Produto X"
                                                             }
@@ -622,10 +337,14 @@
                                             "type": "integer",
                                             "example": 2
                                         },
-                                        "data_orcamento": {
+                                        "status": {
                                             "type": "string",
-                                            "format": "date",
-                                            "example": "2024-05-01"
+                                            "example": "rascunho"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-05-01T10:00:00.000000Z"
                                         },
                                         "cliente": {
                                             "properties": {
@@ -685,7 +404,7 @@
                                                                 "type": "integer",
                                                                 "example": 5
                                                             },
-                                                            "nome": {
+                                                            "descricao": {
                                                                 "type": "string",
                                                                 "example": "Produto X"
                                                             }
@@ -704,6 +423,225 @@
                     },
                     "404": {
                         "description": "Orçamento não encontrado"
+                    }
+                }
+            }
+        },
+        "/pessoas": {
+            "get": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "summary": "Retorna a lista de todas as pessoas cadastradas",
+                "operationId": "d8695a3e195029dad020e09fbb17dd55",
+                "responses": {
+                    "200": {
+                        "description": "Lista completa de pessoas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "nome": {
+                                                "type": "string"
+                                            },
+                                            "eh_cliente": {
+                                                "type": "boolean"
+                                            },
+                                            "eh_vendedor": {
+                                                "type": "boolean"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pessoas/{id}": {
+            "get": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "summary": "Consulta uma pessoa específica pelo ID",
+                "operationId": "48c69b468ee78212377b301bbd09c292",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados da pessoa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "nome": {
+                                            "type": "string"
+                                        },
+                                        "eh_cliente": {
+                                            "type": "boolean"
+                                        },
+                                        "eh_vendedor": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pessoa não encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "summary": "Atualiza os dados de uma pessoa",
+                "operationId": "6d1ccb2cf9137405182735eb74744e30",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "eh_cliente": {
+                                        "type": "boolean"
+                                    },
+                                    "eh_vendedor": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pessoa atualizada com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    },
+                    "404": {
+                        "description": "Pessoa não encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "summary": "Exclui uma pessoa",
+                "operationId": "f020d94838fe781388cca072e983f4ed",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Pessoa excluída com sucesso"
+                    },
+                    "404": {
+                        "description": "Pessoa não encontrada"
+                    }
+                }
+            }
+        },
+        "/api/pessoas": {
+            "post": {
+                "tags": [
+                    "Pessoas"
+                ],
+                "summary": "Cria uma nova pessoa",
+                "operationId": "2cca3d3b6c8c7d4afbd548b31f8e2806",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "eh_cliente": {
+                                        "type": "boolean"
+                                    },
+                                    "eh_vendedor": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pessoa criada com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
                     }
                 }
             }
@@ -1045,311 +983,20 @@
                     }
                 }
             }
-        },
-        "/api/vendedores": {
-            "get": {
-                "tags": [
-                    "Vendedores"
-                ],
-                "summary": "Retorna a lista de todos os vendedores cadastrados",
-                "operationId": "c102ef2bdf28c3039d3de106f77ae7f5",
-                "responses": {
-                    "200": {
-                        "description": "Lista completa de vendedores",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "nome": {
-                                                "type": "string",
-                                                "example": "Maria dos Santos"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2024-01-01T12:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2024-01-02T12:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Vendedores"
-                ],
-                "summary": "Cria um novo vendedor",
-                "operationId": "bd6755f9235b4179db7fadf66b99743b",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "nome"
-                                ],
-                                "properties": {
-                                    "nome": {
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "example": "Maria dos Santos"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Vendedor criado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "nome": {
-                                            "type": "string",
-                                            "example": "Maria dos Santos"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Erro de validação",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/vendedores/{id}": {
-            "get": {
-                "tags": [
-                    "Vendedores"
-                ],
-                "summary": "Consulta um vendedor específico pelo ID",
-                "operationId": "d3da8de5be282fca5c53d06699979b32",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Identificador único do vendedor",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Dados do vendedor encontrados com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "nome": {
-                                            "type": "string",
-                                            "example": "Maria dos Santos"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-02T12:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Vendedor não encontrado"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Vendedores"
-                ],
-                "summary": "Atualiza os dados de um vendedor existente",
-                "operationId": "6f7463eaca58b7eadc178613afe77e77",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Identificador do vendedor",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nome": {
-                                        "type": "string",
-                                        "maxLength": 255,
-                                        "example": "Maria dos Santos"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Vendedor atualizado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "nome": {
-                                            "type": "string",
-                                            "example": "Maria dos Santos"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-01T12:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2024-01-02T12:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Erro de validação",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Vendedor não encontrado"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Vendedores"
-                ],
-                "summary": "Exclui um vendedor pelo ID",
-                "operationId": "76c93dacd251ca61388366d1b83d8300",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID do vendedor a ser removido",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Vendedor excluído com sucesso"
-                    },
-                    "404": {
-                        "description": "Vendedor não encontrado"
-                    }
-                }
-            }
         }
     },
     "tags": [
-        {
-            "name": "Clientes",
-            "description": "Clientes"
-        },
         {
             "name": "Orçamentos",
             "description": "Orçamentos"
         },
         {
-            "name": "Produtos",
-            "description": "Produtos"
+            "name": "Pessoas",
+            "description": "Pessoas"
         },
         {
-            "name": "Vendedores",
-            "description": "Vendedores"
+            "name": "Produtos",
+            "description": "Produtos"
         }
     ]
 }
