@@ -38,7 +38,19 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
                 TextColumn::make('preco_unitario')->money('BRL'),
                 TextColumn::make('total')
                     ->label('Total')
-                    ->getStateUsing(fn($record) => $record->quantidade * $record->preco_unitario)
+                    ->getStateUsing(function ($record) {
+                        // Calcula o total considerando o desconto
+                        $precoTotalSemDesconto = $record->quantidade * $record->preco_unitario;
+
+                        if ($record->desconto > 0) {
+                            // Aplica o desconto percentual
+                            $descontoValor = ($record->desconto / 100) * $precoTotalSemDesconto;
+                            return $precoTotalSemDesconto - $descontoValor;
+                        }
+
+                        // Sem desconto → preço cheio
+                        return $precoTotalSemDesconto;
+                    })
                     ->money('BRL')
                     ->alignRight(),
             ])
@@ -97,7 +109,18 @@ class RelatorioProdutosOrcados extends Page implements Tables\Contracts\HasTable
     {
         $query = $this->getFilteredTableQuery();
 
-        $total = $query->sum(DB::raw('quantidade * preco_unitario'));
+        $total = $query->get()->sum(function ($item) {
+            $precoTotalSemDesconto = $item->quantidade * $item->preco_unitario;
+
+            if ($item->desconto > 0) {
+                // Aplica o desconto percentual
+                $descontoValor = ($item->desconto / 100) * $precoTotalSemDesconto;
+                return $precoTotalSemDesconto - $descontoValor;
+            }
+
+            // Sem desconto → preço cheio
+            return $precoTotalSemDesconto;
+        });
 
         return 'R$ ' . number_format($total, 2, ',', '.');
     }
