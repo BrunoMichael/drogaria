@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             'name' => $pessoa->nome,
             'email' => $pessoa->email,
             'password' => Hash::make('admin'),
+            'permission' => 'gestor',
             'email_verified_at' => now(),
             'pessoa_id' => $pessoa->id,
         ]);
