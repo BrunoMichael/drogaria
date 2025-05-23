@@ -72,20 +72,14 @@ Certifique-se de que o MySQL esteja rodando e que o banco de dados especificado 
 
     php artisan serve
 
----
+**7.** Usuário padrão:
 
-## 📘 Documentação da API (Swagger)
-
-A documentação da API REST está disponível localmente após iniciar o servidor:
-
-📎 [DOCUMENTAÇÃO API](http://127.0.0.1:8000/api/documentation)
-
----
-
+    admin@drogaria.com.br
+    admin
+    
 ## 🗂️ Estrutura de Código
 
 Abaixo estão algumas pastas importantes:
 
 * app/Filament → Painel administrativo
-* app/Http/Controllers/Api → Controllers da API
 * app/Models → Models do sistema
