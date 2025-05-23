@@ -142,25 +142,15 @@ class ItensRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('preco_total')
                     ->label('Preço Total')
                     ->getStateUsing(function ($record) {
-                        // Busca a melhor oferta aplicável
-                        $oferta = $record->produto->ofertas()
-                            ->where('quantidade_levar', '<=', $record->quantidade)
-                            ->whereDate('data_validade', '>=', Carbon::today())
-                            ->orderBy('quantidade_levar', 'desc')
-                            ->first();
-
-                        if ($oferta) {
-                            // Aplica a promoção para calcular valor final
-                            $grupos = floor($record->quantidade / $oferta->quantidade_levar);
-                            $sobra = $record->quantidade % $oferta->quantidade_levar;
-
-                            $quantidadePaga = $grupos * $oferta->quantidade_pagar + $sobra;
-
-                            return $quantidadePaga * $record->preco_unitario;
+                        // Calcula o preço total considerando o desconto, se houver
+                        $precoTotalSemDesconto = $record->quantidade * $record->preco_unitario;
+                        if ($record->desconto > 0) {
+                            // Aplica o desconto percentual
+                            $descontoValor = ($record->desconto / 100) * $precoTotalSemDesconto;
+                            return $precoTotalSemDesconto - $descontoValor;
                         }
-
-                        // Sem promoção → preço cheio
-                        return $record->quantidade * $record->preco_unitario;
+                        // Sem desconto → preço cheio
+                        return $precoTotalSemDesconto;
                     })
                     ->money('BRL'),
             ])
